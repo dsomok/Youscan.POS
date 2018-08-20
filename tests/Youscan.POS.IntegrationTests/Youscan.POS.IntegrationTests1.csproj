@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net471</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Shouldly" Version="3.0.0" />
+    <PackageReference Include="SpecFlow" Version="2.3.2" />
+    <PackageReference Include="SpecFlow.NUnit" Version="2.3.2" />
+    <PackageReference Include="SpecRun.SpecFlow" Version="1.7.2" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
+    <PackageReference Include="NUnit" Version="3.10.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Youscan.POS.Library\Youscan.POS.Library.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Features\POS.feature.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>POS.feature</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Features\POS.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>POS.feature.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+</Project>
