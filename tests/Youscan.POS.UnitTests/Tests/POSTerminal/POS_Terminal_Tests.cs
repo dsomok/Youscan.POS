@@ -21,7 +21,11 @@ namespace Youscan.POS.UnitTests.Tests.POSTerminal
         {
             this._mockCart = new Mock<ICart>();
             this._mockCart.SetupGet(
-                c => c.TotalPrice
+                c => c.PriceWithDiscount
+            ).Returns(TOTAL_PRICE);
+
+            this._mockCart.Setup(
+                c => c.FinishSale()
             ).Returns(TOTAL_PRICE);
 
             this._mockCart.Setup(

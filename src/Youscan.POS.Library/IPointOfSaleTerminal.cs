@@ -1,4 +1,6 @@
-﻿namespace Youscan.POS.Library
+﻿using Youscan.POS.Library.Aggregates.DiscountCardAggregate;
+
+namespace Youscan.POS.Library
 {
     public interface IPointOfSaleTerminal
     {
@@ -9,5 +11,6 @@
 
         double CalculateTotal();
         void Reset();
+        void ApplyDiscountCard(IDiscountCard discountCard);
     }
 }

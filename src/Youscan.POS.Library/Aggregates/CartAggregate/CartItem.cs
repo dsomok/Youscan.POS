@@ -1,4 +1,5 @@
-﻿using Youscan.POS.Library.Aggregates.ProductAggregate;
+﻿using Youscan.POS.Library.Aggregates.DiscountCardAggregate;
+using Youscan.POS.Library.Aggregates.ProductAggregate;
 
 namespace Youscan.POS.Library.Aggregates.CartAggregate
 {
@@ -21,7 +22,11 @@ namespace Youscan.POS.Library.Aggregates.CartAggregate
         public int Count { get; private set; }
 
 
-        public decimal Price => this.Product.GetPrice(this.Count);
+        public decimal FullPrice
+            => this.Product.GetFullPrice(this.Count);
+
+        public decimal GetPriceWithDiscount(IDiscountCard discountCard)
+            => this.Product.GetPriceWithDiscount(this.Count, discountCard);
 
 
         public void IncreaseCount()

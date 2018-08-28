@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Youscan.POS.Library.Aggregates.DiscountCardAggregate;
 using Youscan.POS.Library.Entities.PricingRules;
 
 namespace Youscan.POS.Library.Aggregates.ProductAggregate
@@ -8,9 +9,13 @@ namespace Youscan.POS.Library.Aggregates.ProductAggregate
     {
         Guid Id { get; }
         string Name { get; }
+
         IReadOnlyCollection<IPricingRule> PricingRules { get; }
+
         void SetPricing(decimal price);
         void SetPricing(int count, decimal price);
-        decimal GetPrice(int count);
+
+        decimal GetFullPrice(int count);
+        decimal GetPriceWithDiscount(int count, IDiscountCard discountCard);
     }
 }

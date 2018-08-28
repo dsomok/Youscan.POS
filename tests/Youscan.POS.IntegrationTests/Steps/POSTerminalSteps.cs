@@ -5,6 +5,7 @@ using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using Youscan.POS.IntegrationTests.Models;
 using Youscan.POS.Library;
+using Youscan.POS.Library.Aggregates.DiscountCardAggregate;
 using Youscan.POS.Library.Exceptions;
 
 namespace Youscan.POS.IntegrationTests.Steps
@@ -12,6 +13,7 @@ namespace Youscan.POS.IntegrationTests.Steps
     [Binding]
     public class POSTerminalSteps
     {
+        private IDiscountCard _discountCard = null;
         private readonly IPointOfSaleTerminal _terminal = new PointOfSaleTerminal();
 
         [Given("I have products:")]
@@ -60,6 +62,13 @@ namespace Youscan.POS.IntegrationTests.Steps
             }
         }
 
+        [When("I use discount card with (.*)% of discount")]
+        public void IUseDiscountCard(int percent)
+        {
+            this._discountCard = new DiscountCard(percent);
+            this._terminal.ApplyDiscountCard(this._discountCard);
+        }
+
         [Then("Total price will be (.*)")]
         public void TotalPriceWillBe(double totalPrice)
         {
@@ -75,6 +84,12 @@ namespace Youscan.POS.IntegrationTests.Steps
             ex.ShouldNotBeNull();
             var notFoundException = ex.ShouldBeOfType<ProductNotFoundException>();
             notFoundException.ProductName.ShouldBe(notFound);
+        }
+
+        [Then("There will be (.*) on discount card")]
+        public void AmountOnDiscountCard(decimal amount)
+        {
+            this._discountCard.Amount.ShouldBe(amount);
         }
     }
 }

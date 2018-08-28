@@ -110,13 +110,13 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Scan non-existing products")]
-        [NUnit.Framework.TestCaseAttribute("ABFR", "F", null)]
-        [NUnit.Framework.TestCaseAttribute("G", "G", null)]
-        [NUnit.Framework.TestCaseAttribute("HGK", "H", null)]
-        public virtual void ScanNon_ExistingProducts(string scannedProducts, string notFound, string[] exampleTags)
+        [NUnit.Framework.DescriptionAttribute("Scan existing products with discount card")]
+        [NUnit.Framework.TestCaseAttribute("ABCDABA", "8.13", "14", null)]
+        [NUnit.Framework.TestCaseAttribute("CCCCCCC", "5.5", "7", null)]
+        [NUnit.Framework.TestCaseAttribute("ABCD", "3.64", "7.25", null)]
+        public virtual void ScanExistingProductsWithDiscountCard(string scannedProducts, string totalPrice, string fullPrice, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Scan non-existing products", exampleTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Scan existing products with discount card", exampleTags);
 #line 20
 this.ScenarioSetup(scenarioInfo);
 #line hidden
@@ -148,8 +148,58 @@ this.ScenarioSetup(scenarioInfo);
 #line 21
  testRunner.Given("I have products:", ((string)(null)), table2, "Given ");
 #line 27
- testRunner.When(string.Format("I try to scan products {0}", scannedProducts), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("I scan products {0}", scannedProducts), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 28
+ testRunner.And("I use discount card with 50% of discount", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 29
+ testRunner.Then(string.Format("Total price will be {0}", totalPrice), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 30
+ testRunner.And(string.Format("There will be {0} on discount card", fullPrice), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Scan non-existing products")]
+        [NUnit.Framework.TestCaseAttribute("ABFR", "F", null)]
+        [NUnit.Framework.TestCaseAttribute("G", "G", null)]
+        [NUnit.Framework.TestCaseAttribute("HGK", "H", null)]
+        public virtual void ScanNon_ExistingProducts(string scannedProducts, string notFound, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Scan non-existing products", exampleTags);
+#line 39
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "ProductName",
+                        "SinglePrice",
+                        "VolumeCount",
+                        "VolumePrice"});
+            table3.AddRow(new string[] {
+                        "A",
+                        "1.25",
+                        "3",
+                        "3"});
+            table3.AddRow(new string[] {
+                        "B",
+                        "4.25",
+                        "",
+                        ""});
+            table3.AddRow(new string[] {
+                        "C",
+                        "1",
+                        "6",
+                        "5"});
+            table3.AddRow(new string[] {
+                        "D",
+                        "0.75",
+                        "",
+                        ""});
+#line 40
+ testRunner.Given("I have products:", ((string)(null)), table3, "Given ");
+#line 46
+ testRunner.When(string.Format("I try to scan products {0}", scannedProducts), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 47
  testRunner.Then(string.Format("I will get exception that product {0} doesn\'t exist", notFound), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

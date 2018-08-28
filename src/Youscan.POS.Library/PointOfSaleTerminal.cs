@@ -1,4 +1,5 @@
 ﻿using Youscan.POS.Library.Aggregates.CartAggregate;
+using Youscan.POS.Library.Aggregates.DiscountCardAggregate;
 using Youscan.POS.Library.Exceptions;
 using Youscan.POS.Library.Repositories;
 
@@ -55,9 +56,15 @@ namespace Youscan.POS.Library
         }
 
 
+        public void ApplyDiscountCard(IDiscountCard discountCard)
+        {
+            this._cart.ApplyCard(discountCard);
+        }
+
+
         public double CalculateTotal()
         {
-            var totalPrice = this._cart.TotalPrice;
+            var totalPrice = this._cart.FinishSale();
             return decimal.ToDouble(totalPrice);
         }
 

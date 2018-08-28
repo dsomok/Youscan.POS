@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Youscan.POS.Library.Aggregates.DiscountCardAggregate;
 using Youscan.POS.Library.Aggregates.ProductAggregate.PricingRules;
 using Youscan.POS.Library.Entities.PricingRules;
 using Youscan.POS.Library.Exceptions;
@@ -82,16 +83,37 @@ namespace Youscan.POS.Library.Aggregates.ProductAggregate
         }
 
 
-        public decimal GetPrice(int count)
+        public decimal GetFullPrice(int count)
         {
             if (this._singlePricingRule == null)
             {
                 throw new SinglePriceNotSetException(this.Name);
             }
 
+            return this._singlePricingRule.Price * count;
+        }
+        
+        public decimal GetPriceWithDiscount(int count, IDiscountCard discountCard)
+        {
+            if (this._singlePricingRule == null)
+            {
+                throw new SinglePriceNotSetException(this.Name);
+            }
+
+            decimal PriceWithDiscountCard(int productsCount)
+            {
+                var price = this.GetFullPrice(productsCount);
+                if (discountCard != null)
+                {
+                    price = discountCard.Apply(price);
+                }
+
+                return price;
+            }
+
             if (this._volumePricingRule == null)
             {
-                return this._singlePricingRule.Price * count;
+                return PriceWithDiscountCard(count);
             }
 
 
@@ -99,7 +121,7 @@ namespace Youscan.POS.Library.Aggregates.ProductAggregate
             int singlesCount = count % this._volumePricingRule.Count;
 
             var totalPrice = volumesCount * this._volumePricingRule.Price +
-                             singlesCount * this._singlePricingRule.Price;
+                             PriceWithDiscountCard(singlesCount);
 
             return totalPrice;
         }

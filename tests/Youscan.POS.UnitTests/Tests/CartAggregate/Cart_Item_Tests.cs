@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using Shouldly;
 using Youscan.POS.Library.Aggregates.CartAggregate;
+using Youscan.POS.Library.Aggregates.DiscountCardAggregate;
 using Youscan.POS.Library.Aggregates.ProductAggregate;
 
 namespace Youscan.POS.UnitTests.Tests.CartAggregate
@@ -22,7 +23,10 @@ namespace Youscan.POS.UnitTests.Tests.CartAggregate
                 p => p.Name
             ).Returns(PRODUCT_NAME);
             this._mockProduct.Setup(
-                p => p.GetPrice(It.IsAny<int>())
+                p => p.GetPriceWithDiscount(It.IsAny<int>(), It.IsAny<IDiscountCard>())
+            ).Returns(PRODUCT_PRICE);
+            this._mockProduct.Setup(
+                p => p.GetFullPrice(It.IsAny<int>())
             ).Returns(PRODUCT_PRICE);
         }
 
@@ -34,7 +38,8 @@ namespace Youscan.POS.UnitTests.Tests.CartAggregate
 
             cartItem.Product.Name.ShouldBe(PRODUCT_NAME);
             cartItem.Count.ShouldBe(1);
-            cartItem.Price.ShouldBe(PRODUCT_PRICE);
+            cartItem.FullPrice.ShouldBe(PRODUCT_PRICE);
+            cartItem.GetPriceWithDiscount(null).ShouldBe(PRODUCT_PRICE);
         }
 
         [Test]
